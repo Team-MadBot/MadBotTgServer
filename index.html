@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style.css">
+        <title>MadBot - Капча</title>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    </head>
+    <body>
+        <div id="app">
+            <div id="loading-page" class="page center visible">
+                <span class="loader"></span>
+            </div>
+            <div id="captcha-page" class="page center">
+                <img id="pfp" class="pfp"/>
+                <div id="name" class="name"></div>
+                <div>Пройди капчу, чтобы вступить в группу.</div>
+                <div class="hcaptcha-container">
+                    <div 
+                        id="h-captcha"
+                        class="h-captcha" 
+                        data-sitekey="f838c592-9e86-47ea-bfae-8e96acf22d1c"
+                        data-callback="handleCaptchaSolve"
+                    >
+                    </div>
+                </div>
+                <span id="captcha-loader" class="button-loader"></span>
+            </div>
+            <div id="warning-page" class="page center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="80" width="80" style="padding: 10px; color: orange;"><path fill="currentColor" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+                <div class="header">Обратите внимание</div>
+                <div style="margin-left: 5%; margin-right: 5%;">
+                    Похоже, мы знакомы с Вами лично. Возможно, Вы также знаете моё имя. Я хочу попросить Вас, если Вы знаете моё имя, - не упоминать его в группе.
+                    Точно также и с другой информацией, которая касается моей личной жизни и которую я не освещал в публичном Telegram-канале.
+                </div>
+                <div id="timerButton" class="big-button accept-button invisible">
+                    Хорошо
+                </div>
+                <span id="button-loader" class="button-loader visible"></span>
+            </div>
+            <div id="molodec-page" class="page center">
+                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="80" width="80" style="padding: 10px; color: green;"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
+                <div class="header">Успешно</div>
+                <div>Проверка пройдена: твоя заявка в группу была одобрена!</div>
+                <div class="big-button close-button">
+                    Закрыть
+                </div>
+            </div>
+            <div id="tirobot-page" class="page center">
+                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="80" width="80" style="padding: 10px; color: red;"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
+                <div class="header">Ошибка</div>
+                <div>Что-то пошло не так...</div>
+                <div class="big-button close-button">
+                    Закрыть
+                </div>
+            </div>
+        </div>
+        <script src="/script.js"></script>
+    </body>
+</html>

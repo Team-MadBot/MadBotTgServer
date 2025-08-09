@@ -1,0 +1,157 @@
+* {
+	-webkit-tap-highlight-color: transparent;
+	box-sizing: border-box;
+}
+
+::placeholder {
+	color: var(--tg-theme-hint-color, lightgray);
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--tg-theme-button-color, dodgerblue);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
+
+body {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+		sans-serif;
+	color: var(--tg-theme-text-color, black);
+	user-select: none;
+	background-color: var(--tg-theme-bg-color, white);
+}
+
+.center {
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.center-text {
+	text-align: center;
+}
+
+.big-button {
+    display: flex;
+    width: fit-content;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin: 16px;
+    height: 46px;
+    border-radius: 16px;
+    outline: none;
+    background: var(--tg-theme-button-color, dodgerblue);
+    justify-content: center;
+    align-items: center;
+    color: var(--tg-theme-button-text-color, white);
+    cursor: pointer;
+    transition: background 150ms, opacity 150ms;
+    user-select: auto;
+}
+
+.button-loader {
+    width: 46px;
+    height: 46px;
+    border: 5px solid var(--tg-theme-button-color, dodgerblue);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
+}
+
+.big-button:active {
+    background: color-mix(in oklab, var(--tg-theme-button-color, dodgerblue), #000000 10%);
+}
+
+.big-button .inactive {
+    background: var(--tg-theme-button-color, dodgerblue);
+    opacity: 50%;
+    cursor: default;
+}
+
+
+.app {
+    perspective: 1500px;
+    width: 100%;
+    height: 100%;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.pfp {
+    width: 120px;
+    height: 120px;
+    margin: 16px;
+    background-color: #000000;
+    border-radius: 100%;
+}
+
+.name {
+    font-size: 24px;
+}
+
+.hcaptcha-container {
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.accept-button {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
+    transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
+}
+
+.invisible {
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.8);
+}
