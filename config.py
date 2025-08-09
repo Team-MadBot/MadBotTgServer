@@ -17,5 +17,5 @@ settings: TypedSettings = {
     "token": os.environ["BOT_TOKEN"],
     "hcaptcha_token": os.environ["HCAPTCHA_TOKEN"],
     "apiToken": os.environ["API_TOKEN"],
-    "bot_domain": os.environ["BOT_DOMAIN"]
+    "bot_domain": os.environ["BOT_DOMAIN"],
 }

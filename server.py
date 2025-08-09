@@ -1,4 +1,3 @@
-import sqlite3
 from typing import Optional
 
 import uvicorn
@@ -11,22 +10,12 @@ from fastapi.responses import StreamingResponse
 from hcaptcha.hcaptcha import HCaptchaVerificationError, HCaptchaVerifier
 from pydantic import BaseModel
 
+from db import UserRepository
 from config import settings
 
 app = FastAPI()
 bot = Bot(token=settings["token"])
 hverifier = HCaptchaVerifier(settings["hcaptcha_token"])
-db = sqlite3.connect("database.db")
-db.row_factory = sqlite3.Row
-cur = db.cursor()
-
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS users (
-        user_id INTEGER UNIQUE NOT NULL,
-        is_irl INTEGER NOT NULL DEFAULT(1)
-    );"""
-)
-
 
 load_dotenv()
 
@@ -41,22 +30,6 @@ class CaptchaResponse(BaseModel):
 class GroupInfo(BaseModel):
     groupId: int
     initData: str
-
-
-def check_irl(user_id: int):
-    cur.execute("""SELECT * FROM users WHERE user_id = ? AND is_irl = 1""", (user_id,))
-    user = cur.fetchone()
-    return user is not None
-
-
-def add_irl(user_id: int) -> bool:
-    cur.execute("""INSERT OR IGNORE INTO users (user_id) VALUES (?)""", (user_id,))
-    return True
-
-
-def remove_irl(user_id: int) -> bool:
-    cur.execute("""DELETE FROM users WHERE user_id = ?""", (user_id,))
-    return True
 
 
 @app.get("/", status_code=404)
@@ -128,7 +101,8 @@ async def handle_captcha_aboba(captcha: CaptchaResponse, response: Response):
         return {"status": "Where is the Captcha????"}
     try:
         if await hverifier.verify(captcha.hCaptchaResponse):
-            if check_irl(user_id) and not captcha.irlAccepted:
+            db_user = await UserRepository.get_user_by_id(user_id=user_id)
+            if db_user is not None and db_user.is_irl and not captcha.irlAccepted:
                 return {"status": "IRL"}
             try:
                 await bot.approve_chat_join_request(group_id, user_id)
@@ -151,7 +125,9 @@ async def get_user_info(user_id: int, response: Response, request: Request):
         response.status_code = 401
         return {"status": "Unauthorized"}
 
-    return {"status": "OK", "isIrl": check_irl(user_id)}
+    db_user = await UserRepository.get_user_by_id(user_id=user_id)
+
+    return {"status": "OK", "isIrl": db_user is not None and db_user.is_irl}
 
 
 @app.put("/api/irlinfo/{user_id}", status_code=200)
@@ -160,11 +136,16 @@ async def post_user_info(user_id: int, response: Response, request: Request):
         response.status_code = 401
         return {"status": "Unauthorized"}
 
-    if check_irl(user_id):
+    db_user = await UserRepository.get_user_by_id(user_id=user_id)
+
+    if db_user is not None and db_user.is_irl:
         response.status_code = 400
         return {"status": "Bad request", "message": "User is already in the list!"}
 
-    add_irl(user_id)
+    if db_user is not None:
+        await UserRepository.create_user(user_id=user_id, is_irl=True)
+    else:
+        await UserRepository.update_user_settings(current_user_id=user_id, is_irl=True)
 
     return {"status": "OK"}
 
@@ -175,11 +156,13 @@ async def delete_user_info(user_id: int, response: Response, request: Request):
         response.status_code = 401
         return {"status": "Unauthorized"}
 
-    if not check_irl(user_id):
+    db_user = await UserRepository.get_user_by_id(user_id=user_id)
+
+    if db_user is None or not db_user.is_irl:
         response.status_code = 400
         return {"status": "Bad request", "message": "User wasn't found in the list!"}
 
-    remove_irl(user_id)
+    await UserRepository.update_user_settings(current_user_id=user_id, is_irl=False)
 
     return {"status": "OK"}
 
