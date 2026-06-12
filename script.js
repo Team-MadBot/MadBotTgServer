@@ -53,7 +53,7 @@ function handleGroupInfo(data) {
 
 function handleCaptchaSolve(hCaptchaResponse) {
     captchaLoader.classList.add("visible");
-    const url = "https://tgbot.mxdcxt.xyz/api/submitcaptcha";
+    const url = "https://tgbot.mxdcxt.top/api/submitcaptcha";
     const body = JSON.stringify({
         hCaptchaResponse,
         initData,
@@ -96,7 +96,7 @@ for (const button of closeButtons) {
 }
 
 function getGroupInfo() {
-    const url = "https://tgbot.mxdcxt.xyz/api/getgroupinfo";
+    const url = "https://tgbot.mxdcxt.top/api/getgroupinfo";
     const body = JSON.stringify({
         initData,
         groupId
@@ -190,7 +190,7 @@ function initButton(json_body) {
             json_body.irlAccepted = true;
             acceptButton.classList.add("invisible");
             buttonLoader.classList.add("visible");
-            const url = "https://tgbot.mxdcxt.xyz/api/submitcaptcha";
+            const url = "https://tgbot.mxdcxt.top/api/submitcaptcha";
             const body = JSON.stringify(json_body);
             const request = fetch(url, {
                 method: "POST",
